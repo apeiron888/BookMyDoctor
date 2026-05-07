@@ -22,20 +22,20 @@ services:
     ports:
       - "4000:4000"
     environment:
-      - PORT=4000
-      - MONGODB_URI=mongodb+srv://alleoo2004_db_user:KTrgMijalzmZWtc4@bookmydoctor.4jlrkyu.mongodb.net/?appName=BookMyDoctor
-      - REDIS_URL=redis://redis:6379
-      - JWT_SECRET=bookmydoctor_jwt_secret_2026
-      - JWT_SECRET_KEY=bookmydoctor_jwt_secret_2026
-      - JWT_EXPIRES=7d
-      - COOKIE_EXPIRE=7
-      - ADMIN_EMAIL=admin@bookmydoctor.com
-      - ADMIN_PASSWORD=admin123456
-      - CLOUDINARY_CLOUD_NAME=dh1zghoh2
-      - CLOUDINARY_SECRET_KEY=A4wnNBuogpvybJ-fOqWSEFLYtnA
-      - CLOUDINARY_API_KEY=632251871385414
-      - FRONTEND_URL=http://localhost:5173
-      - DASHBOARD_URL=http://localhost:5174
+      - PORT=${PORT:-4000}
+      - MONGODB_URI=${MONGODB_URI}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - JWT_EXPIRES=${JWT_EXPIRES:-7d}
+      - COOKIE_EXPIRE=${COOKIE_EXPIRE:-7}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_SECRET_KEY=${CLOUDINARY_SECRET_KEY}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:5173}
+      - DASHBOARD_URL=${DASHBOARD_URL:-http://localhost:5174}
     depends_on:
       - mongodb
       - redis
@@ -47,7 +47,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        - VITE_BACKEND_URL=http://localhost:4000
+        - VITE_BACKEND_URL=${VITE_BACKEND_URL:-http://localhost:4000}
     ports:
       - "5173:5173"
     depends_on:
@@ -60,7 +60,7 @@ services:
       context: ./admin
       dockerfile: Dockerfile
       args:
-        - VITE_BACKEND_URL=http://localhost:4000
+        - VITE_BACKEND_URL=${VITE_BACKEND_URL:-http://localhost:4000}
     ports:
       - "5174:5174"
     depends_on:

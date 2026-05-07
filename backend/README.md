@@ -1,98 +1,60 @@
-# BookMyDoctor – Backend API (Express)
+#  BookMyDoctor – Backend API
 
-Express/Mongoose API that powers BookMyDoctor. Provides user, doctor, and admin endpoints with JWT authentication, file uploads to Cloudinary, MongoDB persistence, and PayHere payments (LKR).
+The robust Express.js / MongoDB engine powering BookMyDoctor. Handles secure authentication, real-time booking logic, media processing, and payment integrations.
 
-## 🛠️ Tech Stack
+## Core Tech Stack
 
--  **Node.js** with **Express 5**
--  **MongoDB** via **Mongoose 8**
--  **JWT Authentication** (jsonwebtoken)
--  **Multer** for multipart uploads
--  **Cloudinary SDK v2** for media storage
--  **CORS** enabled
--  **Validator** for data validation
--  **Bcrypt** for password hashing
--  **Crypto** for secure operations
+- **Runtime:** Node.js (v20+)
+- **Framework:** Express.js
+- **Database:** MongoDB + Mongoose (Primary), Redis (Auth & Rate Limiting)
+- **Media Storage:** Cloudinary
+- **Auth:** JWT (JSON Web Tokens)
+- **Validation:** Zod
 
-##  Getting Started
+## Getting Started
 
-```bash
-npm install
+1. **Install Dependencies:**
+   ```bash
+   npm install
+   ```
 
-#  Development with auto-reload
-npm run server
+2. **Configure Environment:**
+   Create a `.env` file in the `backend` directory:
+   ```env
+   PORT=4000
+   MONGODB_URI=your_mongodb_uri
+   JWT_SECRET=your_secret
+   CLOUDINARY_CLOUD_NAME=...
+   CLOUDINARY_API_KEY=...
+   CLOUDINARY_SECRET_KEY=...
+   ADMIN_EMAIL=admin@example.com
+   ADMIN_PASSWORD=...
+   ```
 
-#  Production
-npm start
-```
+3. **Start the Server:**
+   ```bash
+   npm run server   # Development (Nodemon)
+   npm start       # Production
+   ```
 
-Default port is `4000` unless `PORT` is set.
+## API Architecture
 
-##  Environment Variables (`backend/.env`)
+The API is organized into three main namespaces:
 
-```env
-#  Server Configuration
-PORT=4000
+### User/Patient (`/api/user`)
+- Registration & Login
+- Profile management with image upload
+- Appointment booking and cancellation
+- Payment processing (PayHere)
 
-#  Database
-MONGODB_URI=mongodb+srv://<user>:<pass>@cluster...
-# Note: The code connects to `${MONGODB_URI}/prsecripto`
+### Doctor (`/api/doctor`)
+- Specialized login for medical staff
+- Appointment tracking and completion
+- Real-time availability toggling
 
-#  Security
-JWT_SECRET=<strong-secret>
+### Admin (`/api/admin`)
+- Full control over the doctor directory
+- Platform-wide appointment oversight
+- System analytics and dashboard support
 
-#  Cloudinary Configuration
-CLOUDINARY_CLOUD_NAME=...
-CLOUDINARY_API_KEY=...
-CLOUDINARY_SECRET_KEY=...
-
-#  Admin Credentials
-ADMIN_EMAIL=admin@example.com
-ADMIN_PASSWORD=supersecret
-
-#  URLs
-FRONTEND_URL=https://bookmydoctor.vercel.app
-BACKEND_URL=https://bookmydoctor-backend.vercel.app
-
-#  PayHere Payment Gateway
-PAYHERE_MERCHANT_ID=...
-PAYHERE_MERCHANT_SECRET=...
-```
-
-##  API Routes
-
--  `GET /` → Health check: "api working..."
--  `/api/admin` → Admin operations router
--  `/api/doctor` → Doctor operations router
--  `/api/user` → User/Patient operations router
-
-##  Authentication Headers
-
-- **Users/Patients**: `token: <jwt>` (payload `{ id }`)
-- **Doctors**: `dtoken: <jwt>` (payload `{ id }`)
-- **Admins**: `atoken: <jwt>` (token is `jwt.sign(email + password, JWT_SECRET)`)
-
-**Common Response Shape:** `{ success: boolean, ... }`  
-**Error Response:** `{ success: false, message: "..." }`
-
-##  File Uploads
-
--  Multer disk storage (filename preserved)
--  Field name: `image`
--  On user and admin doctor creation, files are uploaded to Cloudinary
--  Secure URL is stored in the database
-
-
-##  Important Notes
-
--  CORS is enabled with defaults; adjust for production as needed
--  MongoDB connection logs "MongoDB connected" on success
--  Appointment slot locking is based on the `slots_booked` map in doctor documents
--  Amounts are treated as LKR decimals with two decimal places when hashing for PayHere
-
-##  Troubleshooting
-
--  **401 Unauthorized**: Missing/invalid token header or mismatched `JWT_SECRET`
--  **MongoDB errors**: Ensure `MONGODB_URI` is valid and properly formatted
--  **Cloudinary failure**: Verify cloud credentials and that `image` field is sent in multipart form
--  **PayHere signature mismatch**: Confirm `PAYHERE_MERCHANT_SECRET`, `FRONTEND_URL`, `BACKEND_URL`, and that amount is formatted to 2 decimals
+---

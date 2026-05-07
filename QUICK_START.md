@@ -135,7 +135,6 @@ npm run build   # Generates dist/ for production
 | `frontend/src/App.jsx` | Frontend router + QueryClient |
 | `docker-compose.yml` | Full stack orchestration |
 | `.env.example` | Required environment variables |
-| `IMPLEMENTATION_COMPLETE.md` | Full system design & specs |
 
 ---
 
@@ -180,6 +179,3 @@ npm run build   # Generates dist/ for production
 For issues or questions, refer to:
 - Backend: `backend/README.md`
 - Frontend: `frontend/README.md`
-- Full docs: `IMPLEMENTATION_COMPLETE.md`
-- Implementation plan: `implementation_plan.md`
-- Task checklist: `task.md`

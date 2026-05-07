@@ -1,84 +1,53 @@
-# ⚙️ BookMyDoctor – Admin Panel (React)
+# ⚙️ BookMyDoctor – Admin Dashboard
 
-The Admin Panel empowers administrators to manage doctors, toggle availability, view and cancel appointments, and monitor platform activity via an interactive dashboard.
+The control center for BookMyDoctor. Empowering administrators to manage the medical network, oversee appointments, and monitor platform health.
 
-## 🛠️ Tech Stack
-
-- ⚛️ **React 19** with **Vite 7**
-- 🛣️ **React Router 7**
-- 🎨 **Tailwind CSS 4** (via @tailwindcss/vite)
-- 📡 **Axios**
-- 🔔 **React Toastify**
-
-## 📜 Scripts
-
-```bash
-npm run dev      # 🚀 Start Vite dev server (port 5174)
-npm run build    # 🏗️ Build for production
-npm run preview  # 👀 Preview production build
-```
-
-## ⚙️ Environment Configuration
-
-Create `admin/.env`:
-
-```env
-VITE_BACKEND_URL=http://localhost:4000
-```
-
-This URL is used by `AdminContext` to call the API under `/api/admin`.
-
-## 🔐 Authentication
-
-- 🔑 Admin login hits `POST /api/admin/login` with email/password
-- ✅ Credentials must match `ADMIN_EMAIL` and `ADMIN_PASSWORD` configured in the backend
-- 💾 After login, an admin JWT is stored in `localStorage` as `aToken`
-- 📤 Token is sent in requests using the `aToken` header
+![Admin Dashboard](../assets/screenshots/admin_dashboard.png)
 
 ## ✨ Key Capabilities
 
-- ➕ **Add Doctor** (multipart form; image field name: `image`)
-- 🔄 **Toggle Doctor Availability**
-- 👨‍⚕️ **View All Doctors**
-- 📅 **View and Cancel Appointments**
-- 📊 **Dashboard Metrics** (doctors, appointments, patients, recent activity)
+-  **👨‍⚕️ Doctor Management**: Add new doctors with multipart image uploads, view the full medical directory, and toggle availability.
+-  **📅 Appointment Oversight**: Monitor all bookings across the platform and cancel them if necessary.
+-  **📊 Live Analytics**: Real-time dashboard metrics tracking total doctors, patients, and appointments.
+-  **🔒 Secure Access**: Dedicated admin authentication flow powered by JWT.
+-  **🌍 Localized UI**: Full support for English and Amharic languages in the dashboard.
 
-## 💻 Development
+## 🛠️ Tech Stack
 
-```bash
-npm install
-npm run dev
-```
+- **Framework:** React 18 + Vite
+- **Styling:** Tailwind CSS
+- **State Management:** React Context API (AdminContext)
+- **Notifications:** React Toastify
+- **Communication:** Axios
 
-🌐 Dev server runs at **http://localhost:5174**
+## 🚀 Development Setup
 
-⚠️ Ensure the backend is running and `VITE_BACKEND_URL` is set correctly.
+1. **Install Dependencies:**
+   ```bash
+   npm install
+   ```
 
-## 🏗️ Production Build
+2. **Configure Environment:**
+   Create an `.env` file in the `admin` directory:
+   ```env
+   VITE_BACKEND_URL=http://localhost:4000
+   ```
 
-```bash
-npm run build
-npm run preview
-```
+3. **Start Dev Server:**
+   ```bash
+   npm run dev
+   ```
+   Visit [http://localhost:5174](http://localhost:5174)
 
-The build output is in `dist/` and can be deployed to any static host.
+## 📁 Internal Structure
 
-## 📁 Folder Structure
+- `src/pages/Admin/AddDoctor.jsx`: Specialized form for adding new medical professionals.
+- `src/pages/Admin/Dashboard.jsx`: Visual summary of platform activity and recent bookings.
+- `src/pages/Admin/DoctorsList.jsx`: Management interface for the doctor directory.
 
-```
-src/
-├── 🧩 components/    # Navbar, Sidebar
-├── 🔌 context/       # AdminContext (API calls, state)
-└── 📄 pages/
-    ├── Login.jsx
-    └── Admin/
-        ├── AddDoctor.jsx
-        ├── AllAppointments.jsx
-        ├── Dashboard.jsx
-        └── DoctorsList.jsx
-```
+---
 
-**Headers:** `{ aToken: <admin-jwt> }`
+**Headers required:** `{ aToken: <admin-jwt> }`
 
 ## 🔧 Troubleshooting
 
