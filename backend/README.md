@@ -1,97 +1,98 @@
-# Backend — Hospital Appointment Management System (HAMS)
+# BookMyDoctor – Backend API (Express)
 
-Express.js REST API with JWT auth, MongoDB/Mongoose, Redis, and role-based access control (patient, doctor, admin).
+Express/Mongoose API that powers BookMyDoctor. Provides user, doctor, and admin endpoints with JWT authentication, file uploads to Cloudinary, MongoDB persistence, and PayHere payments (LKR).
 
-## Quick Start
+## 🛠️ Tech Stack
 
-### 1. Install dependencies
-```bash
-npm ci
-```
+-  **Node.js** with **Express 5**
+-  **MongoDB** via **Mongoose 8**
+-  **JWT Authentication** (jsonwebtoken)
+-  **Multer** for multipart uploads
+-  **Cloudinary SDK v2** for media storage
+-  **CORS** enabled
+-  **Validator** for data validation
+-  **Bcrypt** for password hashing
+-  **Crypto** for secure operations
 
-### 2. Create `.env`
-```bash
-cp .env.example .env
-# Edit .env with real values:
-#   MONGO_URI=mongodb://mongo:27017
-#   REDIS_URL=redis://redis:6379
-#   ACCESS_TOKEN_SECRET=your-secret
-#   REFRESH_TOKEN_SECRET=your-refresh-secret
-```
-
-### 3. Run migrations / seed data
-```bash
-MONGO_URI="mongodb://localhost:27017" \
-REDIS_URL="redis://localhost:6379" \
-ACCESS_TOKEN_SECRET="dev-secret" \
-REFRESH_TOKEN_SECRET="dev-refresh-secret" \
-node seed.js
-```
-
-### 4. Start the server
-```bash
-npm run dev       # watch mode
-npm start         # production
-```
-
-Server listens on port 5000.
-
-## API Endpoints
-
-### Auth (`/api/auth`)
-- `POST /register` — Register patient
-- `POST /login` — Login, get tokens
-- `POST /refresh` — Rotate tokens
-- `POST /logout` — Logout
-
-### Doctors (`/api/doctors`)
-- `GET /` — List doctors (filter by specialization, name)
-- `GET /:id` — Get doctor profile
-- `GET /:id/slots?date=YYYY-MM-DD` — Get available slots
-
-### Appointments (`/api/appointments`)
-- `POST /` — Book appointment (patients only)
-- `GET /my` — List my appointments (patients only)
-- `GET /doctor` — List doctor's appointments (doctors only)
-- `GET /:id` — Get single appointment
-- `PATCH /:id/cancel` — Cancel appointment (patients, 24 hrs before)
-- `PATCH /:id/complete` — Mark completed (doctors)
-
-### Admin (`/api/admin`)
-- `GET /users` — List users (filter: role, search)
-- `GET /appointments` — List appointments (filter: status, doctor, date)
-- `POST /doctors` — Create doctor profile
-- `PATCH /doctors/:id` — Update doctor
-- `DELETE /doctors/:id` — Soft-delete doctor
-- `PATCH /appointments/:id/cancel` — Force-cancel appointment
-
-## Testing
+##  Getting Started
 
 ```bash
-npm test
+npm install
+
+#  Development with auto-reload
+npm run server
+
+#  Production
+npm start
 ```
 
-Runs Jest tests with mocks. See `__tests__/` for examples.
+Default port is `4000` unless `PORT` is set.
 
-## Project Structure
+##  Environment Variables (`backend/.env`)
 
+```env
+#  Server Configuration
+PORT=4000
+
+#  Database
+MONGODB_URI=mongodb+srv://<user>:<pass>@cluster...
+# Note: The code connects to `${MONGODB_URI}/prsecripto`
+
+#  Security
+JWT_SECRET=<strong-secret>
+
+#  Cloudinary Configuration
+CLOUDINARY_CLOUD_NAME=...
+CLOUDINARY_API_KEY=...
+CLOUDINARY_SECRET_KEY=...
+
+#  Admin Credentials
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=supersecret
+
+#  URLs
+FRONTEND_URL=https://bookmydoctor.vercel.app
+BACKEND_URL=https://bookmydoctor-backend.vercel.app
+
+#  PayHere Payment Gateway
+PAYHERE_MERCHANT_ID=...
+PAYHERE_MERCHANT_SECRET=...
 ```
-src/
-├── app.js              # Express app
-├── server.js           # Entry point
-├── config/             # DB/Redis/Env
-├── middleware/         # Auth, validation, error handling
-├── models/             # Mongoose schemas
-├── services/           # Business logic
-├── controllers/        # Route handlers
-├── routes/             # Route definitions
-├── validators/         # Zod schemas
-└── utils/              # Helpers
-```
 
-## Notes
+##  API Routes
 
-- Access tokens expire in 15 minutes; refresh tokens in 7 days.
-- Refresh tokens stored in Redis (revoked on logout).
-- Slot conflict detection via unique compound index on Appointment.
-- Rate limiting: 20 requests/minute on auth routes (Redis-backed).
+-  `GET /` → Health check: "api working..."
+-  `/api/admin` → Admin operations router
+-  `/api/doctor` → Doctor operations router
+-  `/api/user` → User/Patient operations router
+
+##  Authentication Headers
+
+- **Users/Patients**: `token: <jwt>` (payload `{ id }`)
+- **Doctors**: `dtoken: <jwt>` (payload `{ id }`)
+- **Admins**: `atoken: <jwt>` (token is `jwt.sign(email + password, JWT_SECRET)`)
+
+**Common Response Shape:** `{ success: boolean, ... }`  
+**Error Response:** `{ success: false, message: "..." }`
+
+##  File Uploads
+
+-  Multer disk storage (filename preserved)
+-  Field name: `image`
+-  On user and admin doctor creation, files are uploaded to Cloudinary
+-  Secure URL is stored in the database
+
+
+##  Important Notes
+
+-  CORS is enabled with defaults; adjust for production as needed
+-  MongoDB connection logs "MongoDB connected" on success
+-  Appointment slot locking is based on the `slots_booked` map in doctor documents
+-  Amounts are treated as LKR decimals with two decimal places when hashing for PayHere
+
+##  Troubleshooting
+
+-  **401 Unauthorized**: Missing/invalid token header or mismatched `JWT_SECRET`
+-  **MongoDB errors**: Ensure `MONGODB_URI` is valid and properly formatted
+-  **Cloudinary failure**: Verify cloud credentials and that `image` field is sent in multipart form
+-  **PayHere signature mismatch**: Confirm `PAYHERE_MERCHANT_SECRET`, `FRONTEND_URL`, `BACKEND_URL`, and that amount is formatted to 2 decimals
