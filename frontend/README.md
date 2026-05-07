@@ -1,93 +1,87 @@
-# Frontend — Hospital Appointment Management System (HAMS)
+#  BookMyDoctor – Patient Frontend (React)
 
-React + Vite + Tailwind CSS frontend for patient, doctor, and admin dashboards.
+Patient-facing web application to discover medical specialists, book appointments, pay via PayHere, and manage profiles and appointments.
 
-## Quick Start
+ **Live Site:** https://doc-wise-health.vercel.app
 
-### 1. Install dependencies
+##  Tech Stack
+
+-  **React 19** with **Vite 7**
+-  **React Router 7**
+-  **Tailwind CSS 4** (via @tailwindcss/vite)
+-  **Axios**
+-  **React Toastify**
+
+##  Scripts
+
 ```bash
-npm ci
+npm run dev      #  Start Vite dev server (port 5173)
+npm run build    #  Build for production
+npm run preview  #  Preview production build
 ```
 
-### 2. Create `.env`
-```bash
-VITE_API_URL=/api
-VITE_APP_NAME=HAMS
+##  Environment Configuration
+
+Create `frontend/.env`:
+
+```env
+VITE_BACKEND_URL=http://localhost:4000
 ```
 
-### 3. Run dev server
+`AppContext` uses this URL to call the API under `/api/user` and `/api/doctor`.
+
+##  Authentication
+
+-  User login/register returns a JWT stored in `localStorage` as `token`
+-  Authenticated requests include header: `{ token: <jwt> }`
+
+##  Key Capabilities
+
+-  **Browse Doctors** and filter by speciality
+-  **View Doctor Profiles** with fees and availability
+-  **Book Appointments** (date/time slots)
+-  **Pay with PayHere** (LKR)
+-  **View/Cancel Appointments**
+-  **Manage Profile** with avatar upload (multipart `image`)
+
+##  Development
+
 ```bash
+npm install
 npm run dev
 ```
 
-Frontend runs on `http://localhost:3000` with proxy to `/api`.
+ Dev server runs at **http://localhost:5173**
 
-### 4. Build for production
+ Ensure the backend is running and `VITE_BACKEND_URL` is set correctly.
+
+##  Production Build
+
 ```bash
 npm run build
+npm run preview
 ```
 
-## Features
+The build output is in `dist/` and can be deployed to any static host (Vercel, Netlify, etc.).
 
-### Patient
-- Browse doctors by specialization and name
-- View doctor profiles and available appointment slots
-- Book appointments with slot conflict prevention
-- View, cancel (24 hrs before) own appointments
-- Role-based dashboard
-
-### Doctor
-- View assigned appointments
-- Mark appointments as completed
-- Role-based dashboard
-
-### Admin
-- List all users (filter by role, search)
-- List all appointments (filter by status, date, doctor)
-- Manage doctor profiles (create, update, deactivate)
-- Force-cancel appointments
-- Dashboard overview
-
-## Project Structure
+##  Folder Structure
 
 ```
 src/
-├── main.jsx              # Entry point
-├── App.jsx               # App router
-├── index.css             # Tailwind + globals
-├── context/              # AuthContext + provider
-├── hooks/                # useAuth, useApi, etc.
-├── services/             # api.js (Axios instance)
-├── components/
-│   ├── ui/               # Button, Input, Card, Modal, etc.
-│   └── layout/           # Navbar, Sidebar, DashboardLayout
-├── pages/
-│   ├── auth/             # Login, Register
-│   ├── patient/          # Dashboard, DoctorList, Booking, MyAppointments
-│   ├── doctor/           # Dashboard, Appointments
-│   └── admin/            # Dashboard, Users, Appointments
-└── router/               # ProtectedRoute, RoleRoute
+├──  components/    # Header, Navbar, Footer, TopDoctors, etc.
+├──  context/       # AppContext (API calls, auth token, user data)
+└──  pages/
+    ├── Home.jsx
+    ├── Doctors.jsx
+    ├── Appointment.jsx
+    ├── MyAppointments.jsx
+    ├── MyProfile.jsx
+    ├── Login.jsx
+    ├── About.jsx
+    └── Contact.jsx
 ```
 
-## Key Libraries
+##  Troubleshooting
 
-- **React Router v6** — Client-side routing
-- **React Query (TanStack)** — Data fetching & caching
-- **Axios** — HTTP client with interceptors
-- **Tailwind CSS v3** — Styling
-
-## API Integration
-
-- Base URL: `/api` (proxied to backend in dev)
-- Auth: JWT tokens stored in `sessionStorage`
-- Interceptors handle token refresh on 401
-- Auto-logout on refresh failure
-
-## Development
-
-```bash
-npm run lint     # Lint code
-npm run dev      # Start dev server
-npm run build    # Build for prod
-npm run preview  # Preview prod build
-```
+-  **Unauthorized**: Confirm `token` is present in headers and matches backend `JWT_SECRET`
+-  **PayHere flow not returning**: Verify `FRONTEND_URL` and `BACKEND_URL` in backend env as they're used by the payment payload

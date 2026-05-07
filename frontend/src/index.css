@@ -1,31 +1,44 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
-body {
-  @apply bg-gray-50;
+@theme {
+  --color-primary: #1e3a8a;
 }
 
-.btn {
-  @apply px-4 py-2 rounded-md font-medium transition;
+* {
+  font-family: Outfit;
 }
 
-.btn-primary {
-  @apply btn bg-primary-600 text-white hover:bg-primary-700;
+/* Smooth scrolling for all elements */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+  /* Offset for fixed headers if any */
 }
 
-.btn-secondary {
-  @apply btn bg-gray-200 text-gray-900 hover:bg-gray-300;
+/* Enhanced smooth scrolling with easing */
+* {
+  scroll-behavior: smooth;
 }
 
-.btn-danger {
-  @apply btn bg-danger text-white hover:opacity-90;
+:root {
+  --primary-color: #1e3a8a;
 }
 
-.input {
-  @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500;
+.bg-primary {
+  background-color: var(--primary-color) !important;
 }
 
-.card {
-  @apply bg-white rounded-lg shadow p-6;
+.active hr {
+  display: block;
+}
+
+::-webkit-scrollbar {
+  @apply hidden;
+}
+
+@media (max-width: 740px) {
+  .active p {
+    @apply text-white bg-primary
+  }
 }

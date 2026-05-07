@@ -1,111 +1,38 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { AuthProvider } from './context/AuthContext.jsx';
-import { ProtectedRoute, RoleRoute } from './router/index.jsx';
-import { Navbar } from './components/layout/index.jsx';
+import { Routes, Route } from 'react-router-dom'
+import Home from './pages/Home'
+import About from './pages/About'
+import Doctors from './pages/Doctors'
+import Login from './pages/Login'
+import Contact from './pages/Contact'
+import MyProfile from './pages/MyProfile'
+import MyAppointments from './pages/MyAppointments'
+import Appointment from './pages/Appointment'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-// Auth Pages
-import { LoginPage } from './pages/auth/LoginPage.jsx';
-import { RegisterPage } from './pages/auth/RegisterPage.jsx';
+const App = () => {
+  return (
+    <div className='mx-4 sm:mx-[10%]'>
+      <ToastContainer />
+      <Navbar />
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/doctors' element={<Doctors />} />
+        <Route path='/doctors/:speciality' element={<Doctors />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/contact' element={<Contact />} />
+        <Route path='/my-profile' element={<MyProfile />} />
+        <Route path='/my-appointments' element={<MyAppointments />} />
+        <Route path='/appointment/:docId' element={<Appointment />} />
+      </Routes>
+      <Footer />
 
-// Patient Pages
-import { PatientDashboardPage } from './pages/patient/DashboardPage.jsx';
-import { DoctorListPage } from './pages/patient/DoctorListPage.jsx';
-import { DoctorDetailPage } from './pages/patient/DoctorDetailPage.jsx';
-import { MyAppointmentsPage } from './pages/patient/MyAppointmentsPage.jsx';
-
-// Doctor Pages
-import { DoctorDashboardPage } from './pages/doctor/DashboardPage.jsx';
-import { DoctorAppointmentsPage } from './pages/doctor/AppointmentsPage.jsx';
-
-// Admin Pages
-import { AdminDashboardPage } from './pages/admin/DashboardPage.jsx';
-import { AdminUsersPage } from './pages/admin/UsersPage.jsx';
-import { AdminAppointmentsPage } from './pages/admin/AppointmentsPage.jsx';
-
-const queryClient = new QueryClient();
-
-function App() {
-    return (
-        <QueryClientProvider client={queryClient}>
-            <AuthProvider>
-                <Router>
-                    <Navbar />
-                    <Routes>
-                        {/* Auth Routes */}
-                        <Route path="/login" element={<LoginPage />} />
-                        <Route path="/register" element={<RegisterPage />} />
-
-                        {/* Patient Routes */}
-                        <Route
-                            path="/dashboard"
-                            element={
-                                <ProtectedRoute>
-                                    <PatientDashboardPage />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/doctors"
-                            element={
-                                <ProtectedRoute>
-                                    <DoctorListPage />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/doctor/:id"
-                            element={
-                                <ProtectedRoute>
-                                    <DoctorDetailPage />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/my-appointments"
-                            element={
-                                <ProtectedRoute>
-                                    <MyAppointmentsPage />
-                                </ProtectedRoute>
-                            }
-                        />
-
-                        {/* Doctor Routes */}
-                        <Route
-                            path="/doctor/appointments"
-                            element={
-                                <RoleRoute allowedRoles={['doctor']}>
-                                    <DoctorAppointmentsPage />
-                                </RoleRoute>
-                            }
-                        />
-
-                        {/* Admin Routes */}
-                        <Route
-                            path="/admin/users"
-                            element={
-                                <RoleRoute allowedRoles={['admin']}>
-                                    <AdminUsersPage />
-                                </RoleRoute>
-                            }
-                        />
-                        <Route
-                            path="/admin/appointments"
-                            element={
-                                <RoleRoute allowedRoles={['admin']}>
-                                    <AdminAppointmentsPage />
-                                </RoleRoute>
-                            }
-                        />
-
-                        {/* 404 & redirect */}
-                        <Route path="/" element={<Navigate to="/dashboard" />} />
-                        <Route path="*" element={<Navigate to="/dashboard" />} />
-                    </Routes>
-                </Router>
-            </AuthProvider>
-        </QueryClientProvider>
-    );
+    </div>
+  )
 }
 
-export default App;
+export default App
+
