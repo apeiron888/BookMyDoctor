@@ -21,9 +21,8 @@ npm run dev   # Starts on http://localhost:3000
 **Terminal 3 — Seed data (optional):**
 ```bash
 cd backend
-node seed.js   # Creates test users: admin@hams.com, john@hams.com, jane@hams.com
+npm run seed   # Creates test users: admin@hams.com, john@hams.com, jane@hams.com
 ```
-
 **Test Credentials:**
 ```
 Admin:   admin@hams.com / Admin@123456
@@ -41,8 +40,10 @@ cp .env.example .env
 # 2. Build & run everything
 docker compose up --build
 
-# 3. Seed test data (in new terminal)
-docker compose exec backend node seed.js
+# 3. Seed test data (optional, in new terminal)
+# Enable SEED_ON_START=true in backend/.env before running compose,
+# or run manually:
+docker compose exec backend npm run seed
 
 # 4. Access at http://localhost
 ```

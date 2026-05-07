@@ -20,18 +20,18 @@ cd backend && npm ci && npm run dev
 cd frontend && npm ci && npm run dev
 
 # Terminal 3: Seed test data (optional)
-cd backend && node seed.js
+cd backend && npm run seed
 ```
 
-Visit `http://localhost:3000` (frontend proxies to backend on `/api`)
+Visit `http://localhost:3000` for local frontend development.
 
-### Docker (Production)
+If you are running the Docker stack, add `127.0.0.1 mydoctor.com` to your hosts file and open `http://mydoctor.com`.
+
+### Docker (Recommended)
 ```bash
-docker compose up --build
-docker compose exec backend node seed.js
+docker compose up --build -d
 ```
-
-Visit `http://localhost`
+Visit `http://localhost:5173` for the Patient Frontend and `http://localhost:5174` for the Admin Dashboard.
 
 ## 📋 Features
 
@@ -43,8 +43,9 @@ Visit `http://localhost`
 ✅ **Rate Limiting** — Redis-backed (20 req/min on auth endpoints)
 ✅ **Conflict Prevention** — Unique compound index prevents double-booking
 ✅ **Role-Based Access** — Patient, doctor, admin roles
-✅ **Frontend** — React + Vite + Tailwind, role-based dashboards
-✅ **Docker** — Full containerization with health checks
+✅ **Frontend** — React + Vite, formal localized CSS layout, role-based dashboards
+✅ **Localization** — Global English & Amharic translations via `react-i18next`
+✅ **Docker** — Full containerization for frontend, backend, dashboard, redis, and mongodb components
 ✅ **Tests** — Jest + Supertest (4 tests passing)
 
 ## 🛠️ Tech Stack
@@ -75,13 +76,6 @@ After seeding, use:
 - **Admin:** `admin@hams.com` / `Admin@123456`
 - **Doctor:** `john@hams.com` / `Doctor@123456`
 - **Patient:** `jane@hams.com` / `Patient@123456`
-
-## 🧪 Testing
-
-```bash
-cd backend
-npm test    # 4 jest tests passing
-```
 
 ## 📊 API Overview
 

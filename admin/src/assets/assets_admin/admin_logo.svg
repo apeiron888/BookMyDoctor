@@ -1,0 +1,10 @@
+<svg width="220" height="50" viewBox="0 0 220 50" xmlns="http://www.w3.org/2000/svg">
+  <!-- Cross / Medical Icon -->
+  <rect x="4" y="4" width="36" height="36" rx="6" fill="#5F6FFF"/>
+  <rect x="19" y="10" width="6" height="24" fill="#FFFFFF" rx="2"/>
+  <rect x="10" y="19" width="24" height="6" fill="#FFFFFF" rx="2"/>
+  <!-- Brand Name -->
+  <text x="50" y="20" font-family="'Inter', 'Segoe UI', sans-serif" font-weight="800" font-size="16" fill="#1F2937">Book<tspan fill="#5F6FFF">My</tspan>Doctor</text>
+  <!-- Tagline -->
+  <text x="50" y="36" font-family="'Inter', 'Segoe UI', sans-serif" font-weight="400" font-size="10" fill="#6B7280" letter-spacing="0.5">Admin Dashboard</text>
+</svg>
